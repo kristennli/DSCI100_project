@@ -3,10 +3,10 @@ UBC DSCI100 Group Project
 
 # Project Proposal (DUE DATE UPDATED MARCH 5)
 List of datasets
-1.COVID-19 https://github.com/owid/covid-19-data/tree/master/public/data
-  - Updated daily
-  - The variables are confirmed cases, deaths, hospitalizations, and testing, as well as other variables of potential interest
-  - missing data in some variables
+1. COVID-19 https://github.com/owid/covid-19-data/tree/master/public/data
+   - Updated daily
+   - The variables are confirmed cases, deaths, hospitalizations, and testing, as well as other variables of potential interest
+   - missing data in some variables
   
 2. Video Game Sale https://www.kaggle.com/gregorut/videogamesales
    - sale data from 2009 to 2016, scraped from vgchartz.com. Cleaned.
