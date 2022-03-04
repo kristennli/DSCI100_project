@@ -1,0 +1,82 @@
+#KL exploratory script
+library(tidyverse)
+library(dplyr)
+
+#load video game sale data
+dat <- read_csv("vgsales.csv")
+dat
+
+#the customers' preference shifts in different genres over years (maybe top 5)
+top_genre <- dat %>%
+    group_by(Genre) %>%
+    summarise(n=n()) %>%
+    head(6)
+top_genre
+
+#omit Misc, summarize the top 5 genre global sales
+top_5_genre <- dat %>%
+    filter(Genre %in% 
+             c("Action", "Adventure", "Fighting", "Platform", "Puzzle"))%>%
+    group_by(Year,Genre)%>%
+    summarize(total_sales = sum(Global_Sales))
+    
+top_5_genre
+
+#plot top 5 genre global sales vs yr
+options(repr.plot.width = 15, repr.plot.height = 6)
+top_5_genre_plot <- top_5_genre %>%
+    ggplot(aes(x = Year, y = total_sales, colour = Genre))+
+    geom_point()+
+    labs(x = "Year of the game's release",
+         y = "Total Sales (in millions USD)", 
+         colour = "Genre of the game",
+         title = "Sales for the top 5 game genre")+
+    theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=0.5), 
+          text = element_text(size = 10))+
+    theme(plot.title = element_text(hjust = 0.5))
+#!!!got some n/a in the year, need to investigate
+#maybe render this with line plot to better see the up and down?
+
+top_5_genre_plot
+
+#top 5 gaming platform, head the top 5, most platforms are quite ancient,need to 
+#omit those that are currently not featuring
+ancient_top_platform <- dat %>%
+  group_by(Platform) %>%
+  summarise(n=n()) %>%
+  arrange(desc(n))%>%
+  head(11)
+ancient_top_platform
+
+#omit DS, PS2,PS3,PSP(Playstation portable), one potential fault with this
+#dataset, newest platforms like switch and PS4 and PS5 are included
+#chose, Wii, X360, PS2, PS3, PC
+#XB(not really sure difference btw XB and X360), need to investigate
+top_5_platform <- dat %>%
+  filter(Platform %in% 
+           c("Wii", "X360", "PS2", "PC", "PS3"))%>%
+  group_by(Year,Platform)%>%
+  summarize(total_sales = sum(Global_Sales))
+
+top_5_platform 
+
+#plot top 5 platforms' global sales vs yr
+options(repr.plot.width = 15, repr.plot.height = 6)
+top_5_platform_plot <- top_5_platform %>%
+  ggplot(aes(x = Year, y = total_sales, colour = Platform))+
+  geom_point()+
+  labs(x = "Year of the game's release",
+       y = "Total Sales (in millions USD)", 
+       colour = "Platform of the game",
+       title = "Sales for the top 5 gaming platform")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=0.5), 
+        text = element_text(size = 10))+
+  theme(plot.title = element_text(hjust = 0.5))
+top_5_platform_plot
+
+#top 5 publisher's sum of all sales 
+
+
+
+#correlation with total sales with regional sales in relation with genres
+#help figure out the predictors
