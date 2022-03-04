@@ -25,6 +25,15 @@ List of datasets
 3. COVID-19 Lung Images https://www.kaggle.com/c/dlai3/data
    - contains train and test sets
 
+
+4. Travel Data and COVID Cases
+- Data File: https://github.com/ActiveConclusion/COVID19_AirTraffic/blob/master/flight_data/flights.csv
+- Choose 10 countries that are classified as "island" and 10 countries that are classified as "continental".
+- Compare monthly travel data with COVID cases. 
+- *Regression* or classification (Need to discuss!)
+- Variables: International arrivals / domestic / island or continential.
+- We will use data from January 1st 2020 ~ March 24th 2020
+
 To do list:
 - [x] email Eric(TA) to confirm the usability of the above datasets
 - [ ] formulate predictive questions from each datasets
