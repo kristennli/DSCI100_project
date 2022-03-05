@@ -1,4 +1,3 @@
-#KL exploratory script
 library(tidyverse)
 library(dplyr)
 
@@ -27,6 +26,7 @@ options(repr.plot.width = 15, repr.plot.height = 6)
 top_5_genre_plot <- top_5_genre %>%
     ggplot(aes(x = Year, y = total_sales, colour = Genre))+
     geom_point()+
+    geom_line()+
     labs(x = "Year of the game's release",
          y = "Total Sales (in millions USD)", 
          colour = "Genre of the game",
@@ -38,6 +38,7 @@ top_5_genre_plot <- top_5_genre %>%
 #maybe render this with line plot to better see the up and down?
 
 top_5_genre_plot
+
 
 #top 5 gaming platform, head the top 5, most platforms are quite ancient,need to 
 #omit those that are currently not featuring
@@ -75,8 +76,35 @@ top_5_platform_plot <- top_5_platform %>%
 top_5_platform_plot
 
 #top 5 publisher's sum of all sales 
+top_publisher <- dat %>%
+  group_by(Publisher)%>%
+  summarize(sum_NA_Salles = sum(NA_Sales), 
+            sum_EU_Sales = sum(EU_Sales),
+            sum_JP_Sales = sum(JP_Sales),
+            sum_Global_Sales = sum(Global_Sales))%>%
+  arrange(desc(sum_Global_Sales))%>%
+  head(10)
 
+top_publisher 
 
+#top publisher plot
 
+options(repr.plot.width = 15, repr.plot.height = 6)
+top_publisher_plot <- top_5_platform %>%
+  ggplot(aes(x = Platform, y = total_sales))+
+  geom_histogram()+
+  labs(x = "Game Publisher",
+       y = "Total Sales (in millions USD)",
+       title = "Sales for the top 5 gaming platform")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=0.5), 
+        text = element_text(size = 10))+
+  theme(plot.title = element_text(hjust = 0.5))
+top_publisher_plot
 #correlation with total sales with regional sales in relation with genres
 #help figure out the predictors
+dat2<-dat%>%
+  filter(Genre== "Action")%>%
+  filter(Platform %in% 
+           c("Wii", "X360", "PS2", "PC", "PS3"))
+
+dat2
