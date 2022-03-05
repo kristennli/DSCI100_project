@@ -16,9 +16,19 @@ vg<-na.omit(ovg) %>%
 
 vg
 
+# Set the seed. Don't remove this!
+set.seed(9999) 
+
+# Randomly take 75% of the data in the training set. 
+# This will be proportional to the different number of fruit names in the dataset.
+
+vg_split <- initial_split(vg, prop = 0.75, strata = EU_Sales)  
+vg_train <- training(vg_split)   
+vg_test <- testing(vg_split)
+
 #1. genre
 #what game genres have been made the most(in descending order?
-vg_genre <- vg %>%
+vg_genre <- vg_train %>%
   group_by(Genre) %>%
   summarise(n=n())%>%
   arrange(desc(n))
@@ -41,7 +51,7 @@ vg_genre_plot <- vg_genre%>%
 vg_genre_plot
 
 #summarize the different game genres' global sales
-genre_gbsales <- vg %>%
+genre_gbsales <- vg_train %>%
   filter(Genre %in% c("Action","Sports","Role-Playing","Shooter",
                       "Adventure","Racing"))%>%
     group_by(Year,Genre)%>%
@@ -69,7 +79,7 @@ genre_gbsales_plot
 
 #2.game publisher
 #top 10 publisher's sum of all sales 
-top_publisher <- vg %>%
+top_publisher <- vg_train %>%
   group_by(Publisher)%>%
   summarize(sum_NA_Salles = sum(NA_Sales), 
             sum_EU_Sales = sum(EU_Sales),
@@ -101,13 +111,13 @@ top_publisher_plot
 #!!!generate a table to show the top 20 game platforms
 #in order to show relevancy, the game platforms need to be still in high demand
 #hence, render the top 10 game platforms within the decade (2012-2022)
-game_platform <- vg %>%
+game_platform <- vg_train %>%
   group_by(Platform)%>%
   summarize(total_sales = sum(Global_Sales))%>%
   arrange(desc(total_sales))%>%
   head(20)
 
-game_platform_new <-vg %>%
+game_platform_new <-vg_train %>%
   filter(Year>= 2012)%>%
   group_by(Platform)%>%
   summarize(total_sales = sum(Global_Sales))%>%
@@ -142,7 +152,7 @@ top_platform_plot
 #help with figuring out the predictors
 
 #creating correlation matrix, only qualitative data(various sales)
-vg_hm <- vg%>% 
+vg_hm <- vg_train%>% 
   select(-(Rank:Publisher))
 
 vg_hm
@@ -157,12 +167,9 @@ sales_cor
 
 
 #!!!heatmap to show correlation, not 100% sure how to do
-# vg_hm2 <-vg%>% 
+# vg_hm2 <-vg_train%>% 
 #   select(-Rank)
 # g1 <- vg_hm2%>%
 #   ggplot(aes(x= Genre, y = Global_Sales, fill = "blue"))+
 #   geom_tile()
 # g1
-
-
-       
