@@ -1,0 +1,168 @@
+library(tidyverse)
+library(dplyr)
+library(RColorBrewer)
+library(tidyr)
+
+#load video game sale vga
+ovg <- read_csv("vgsales.csv")
+ovg
+
+#summary of the data frame
+summary(ovg)
+
+#remove missing data
+vg<-na.omit(ovg) %>%
+  filter(Year<2017)
+
+vg
+
+#1. genre
+#what game genres have been made the most(in descending order?
+vg_genre <- vg %>%
+  group_by(Genre) %>%
+  summarise(n=n())%>%
+  arrange(desc(n))
+
+vg_genre
+
+#visualization on the number of games in each genre
+vg_genre_plot <- vg_genre%>%
+  ggplot(aes(x = reorder(Genre, -n), y = n, fill = Genre))+
+  geom_bar(stat = 'identity')+
+  labs(x = "Genre of the game",
+       y = "Count", 
+       fill = "Genre",
+       title = "Game Genre !!!")+
+  scale_color_brewer(palette = "Set3")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.6, hjust=0.5), 
+        text = element_text(size = 10))+
+  theme(plot.title = element_text(hjust = 0.5))
+
+vg_genre_plot
+
+#summarize the different game genres' global sales
+genre_gbsales <- vg %>%
+  filter(Genre %in% c("Action","Sports","Role-Playing","Shooter",
+                      "Adventure","Racing"))%>%
+    group_by(Year,Genre)%>%
+    summarize(total_sales = sum(Global_Sales))
+    
+genre_gbsales
+
+#plot top 7 genre global sales vs yr
+#the customers' preference shifts in all genres over years
+#in recent years, sales are decreasing among all 7 genres
+options(repr.plot.width = 15, repr.plot.height = 10)
+genre_gbsales_plot <- genre_gbsales %>%
+  ggplot(aes(x = Year, y = total_sales, colour = Genre, group = Genre))+
+  geom_point(alpha = 0.6)+
+  geom_line(alpha = 0.9)+
+    labs(x = "Year of the game's release",
+         y = "Total Sales (in millions)", 
+         colour = "Genre of the game",
+         title = "Sales for the top 7 game genres")+
+    theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=0.5), 
+          text = element_text(size = 10))+
+    theme(plot.title = element_text(hjust = 0.5))
+
+genre_gbsales_plot
+
+#2.game publisher
+#top 10 publisher's sum of all sales 
+top_publisher <- vg %>%
+  group_by(Publisher)%>%
+  summarize(sum_NA_Salles = sum(NA_Sales), 
+            sum_EU_Sales = sum(EU_Sales),
+            sum_JP_Sales = sum(JP_Sales),
+            sum_Global_Sales = sum(Global_Sales))%>%
+  arrange(desc(sum_Global_Sales))%>%
+  head(10)
+
+top_publisher 
+
+#top total global sales by publisher plot
+#!!! align the axis labels to the top
+options(repr.plot.width = 15, repr.plot.height = 6)
+top_publisher_plot <- top_publisher %>%
+  ggplot(aes(x = reorder(Publisher, -sum_Global_Sales), 
+             y = sum_Global_Sales))+
+  geom_bar(stat='identity')+
+  labs(x = "Game Publisher",
+       y = "Total Sales (in millions)",
+       title = "Top Global Sales for the top 10 gaming platforms")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=0.5), 
+        text = element_text(size = 10))+
+  theme(plot.title = element_text(hjust = 0.5))
+
+top_publisher_plot
+
+
+#3.game platform
+#!!!generate a table to show the top 20 game platforms
+#in order to show relevancy, the game platforms need to be still in high demand
+#hence, render the top 10 game platforms within the decade (2012-2022)
+game_platform <- vg %>%
+  group_by(Platform)%>%
+  summarize(total_sales = sum(Global_Sales))%>%
+  arrange(desc(total_sales))%>%
+  head(20)
+
+game_platform_new <-vg %>%
+  filter(Year>= 2012)%>%
+  group_by(Platform)%>%
+  summarize(total_sales = sum(Global_Sales))%>%
+  arrange(desc(total_sales))%>%
+  head(10)
+
+game_platform_new
+
+#extract the top 10 gaming platforms
+top10_platform <-pull(game_platform_new,Platform)
+top10_platform
+
+#top 10 platforms' sales distribution
+options(repr.plot.width = 15, repr.plot.height = 6)
+top_platform_plot <- game_platform_new %>%
+  ggplot(aes(x = reorder(Platform,total_sales), 
+             y = total_sales, 
+             fill = Platform))+
+  geom_bar(stat='identity')+
+  labs(x = "Game Platform",
+       y = "Total Sales (in millions)", 
+       colour = "Platform of the game",
+       title = "Sales for the top 10 gaming platforms")+
+  scale_color_brewer(palette = "Set3")+
+  theme(text = element_text(size = 10))+
+  theme(plot.title = element_text(hjust = 0.5))+
+  coord_flip()
+  
+top_platform_plot
+
+#variable correlation heatmap
+#help with figuring out the predictors
+
+#creating correlation matrix, only qualitative data(various sales)
+vg_hm <- vg%>% 
+  select(-(Rank:Publisher))
+
+vg_hm
+
+sales_cor <- round(cor(vg_hm),2)%>%
+  as.matrix()
+#from this matrix, Research question might be more relavent when we have the 
+#NA sales and Other_Sales as predictors to predict the sales in Europe
+#respective correlation values are 0.77 and 0.73
+#should not use Japan sales as a predictor since the correlations are low
+sales_cor
+
+
+#!!!heatmap to show correlation, not 100% sure how to do
+# vg_hm2 <-vg%>% 
+#   select(-Rank)
+# g1 <- vg_hm2%>%
+#   ggplot(aes(x= Genre, y = Global_Sales, fill = "blue"))+
+#   geom_tile()
+# g1
+
+
+       
