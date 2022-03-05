@@ -2,6 +2,8 @@ library(tidyverse)
 library(dplyr)
 library(RColorBrewer)
 library(tidyr)
+library(repr)
+library(tidymodels)
 
 #load video game sale vga
 ovg <- read_csv("vgsales.csv")
