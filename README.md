@@ -1,5 +1,10 @@
 # DSCI100_project
 UBC DSCI100 Group Project
+# Final Project (Due APRIL 9)
+The URL for the video game dataset: "https://raw.githubusercontent.com/kristennli/DSCI100_project/main/vgsales.csv"
+<br />Linear Regression: Junqi & KL 
+<br />KNN: Jenny & Bianca
+
 
 # Project Proposal (DUE DATE UPDATED MARCH 5)
 Video Game Sale https://www.kaggle.com/gregorut/videogamesales
