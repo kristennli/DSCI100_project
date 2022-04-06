@@ -1,5 +1,9 @@
 # DSCI100_project
 UBC DSCI100 Group Project
+<br> linear regression - KL and Junqi
+<br> KNN - Jenny and Bianca
+
+NEXT Meeting Wednesday 7pm
 
 # Project Proposal (DUE DATE UPDATED MARCH 5)
 Video Game Sale https://www.kaggle.com/gregorut/videogamesales
