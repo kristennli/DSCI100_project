@@ -3,7 +3,15 @@ UBC DSCI100 Group Project
 <br> linear regression - KL and Junqi
 <br> KNN - Jenny and Bianca
 
-NEXT Meeting Wednesday 7pm
+NEXT Meeting Wednesday 8pm
+
+- briefing on the 2 models
+- check RMSE, figure out the more accurate model.
+- decide which visualizaitons go into the report
+- update the expected outcome section
+- set up a meeting on Saturday to polish the report
+
+
 
 # Project Proposal (DUE DATE UPDATED MARCH 5)
 Video Game Sale https://www.kaggle.com/gregorut/videogamesales
