@@ -8,9 +8,13 @@ NEXT Meeting Wednesday 8pm
 - briefing on the 2 models
 - check RMSE, figure out the more accurate model.
 - decide which visualizaitons go into the report
-- update the expected outcome section
+- update the discussion section
+- update references
 - set up a meeting on Saturday to polish the report
 
+
+from the feedback:
+If relevant, discuss any potential risks associated with your predictors or model (ex. Overfitting, underfitting, multicollinearity, etc…)
 
 
 # Project Proposal (DUE DATE UPDATED MARCH 5)
