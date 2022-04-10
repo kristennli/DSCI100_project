@@ -1,5 +1,9 @@
 # DSCI100_project
 UBC DSCI100 Group Project
+
+April 9 - all submitted, yay! Hope this report helps whoever is checking!
+
+
 <br> linear regression - KL and Junqi
 <br> KNN - Jenny and Bianca
 
